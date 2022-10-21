@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
-project(movie_tracker LANGUAGES CXX)
+project(gas_tracker LANGUAGES CXX)
 
-set(BINARY_NAME "movie_tracker")
+set(BINARY_NAME "gas_tracker")
 
 cmake_policy(SET CMP0063 NEW)
 

@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.movie_tracker">
+    package="com.example.gas_tracker">
    <application
-        android:label="movie_tracker"
+        android:label="gas_tracker"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

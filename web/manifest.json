@@ -1,6 +1,6 @@
 {
-    "name": "movie_tracker",
-    "short_name": "movie_tracker",
+    "name": "gas_tracker",
+    "short_name": "gas_tracker",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
