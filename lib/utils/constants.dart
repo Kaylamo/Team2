@@ -2,32 +2,7 @@ import 'package:flutter/material.dart';
 import '/views/homeScreen.dart';
 import 'package:sizer/sizer.dart';
 
-//final GlobalKey<_HomePageState> kHomeScreenKey = GlobalKey();
 
-const kThemoviedbURL = "https://api.themoviedb.org/3/movie";
-const kThemoviedbSearchURL = "https://api.themoviedb.org/3/search/movie";
-const kThemoviedbImageURL = "https://image.tmdb.org/t/p/w300";
-const kHomeScreenButtonFirstText = "Trending";
-const kHomeScreenButtonSecondText = "For You";
-const kHomeScreenButtonThirdText = "Top";
-const kHomeScreenTitleText = "Movie Tracker";
-const k404Text = "Movies not found";
-const kFavoriteRemovedText = "Movie removed from Subscriptions";
-const kFavoriteAddedText = "Movie added to Subscriptions";
-const kDetailsScreenTitleText = "Overview";
-const kStoryLineTitleText = "Storyline";
-const kSplashScreenTitleText = "loading..";
-const kFinderScreenTitleText = "Search";
-const kFavoriteScreenTitleText = "Subscriptions";
-const kDrawerTitleFirstText = "THEME";
-const kDrawerTitleSecondText = "ABOUT";
-const kDrawerTitleThirdText = "DEPENDENCIES";
-const kAppliedTheme = "Theme applied";
-const kNotFoundErrorText = "Not found";
-const kDrawerAboutDescText =
-    "Hi, We are making an app that tracks Actors and Actresses to see what/when their recent movies are going to be released!";
-const kDrawerDependenciesDescText =
-    "\t• sizer\n\t• flutter_spinkit\n\t• cached_network_image\n\t• fluttertoast\n\t• http\n\t• path_provider";
 const kMainGreenColor = Color(0xFF37A45E);
 const kMainOrangeColor = Color(0xFFE58901);
 const kMainBlueColor = Color(0xFF2C78C5);
@@ -111,7 +86,6 @@ final kTextFieldDecoration = InputDecoration(
   disabledBorder: InputBorder.none,
 );
 
-final kMovieAppBarTitleTextStyle = TextStyle(fontSize: 22.sp);
 
 final kDetailScreenBoldTitle = TextStyle(
   fontSize: 20.sp,
