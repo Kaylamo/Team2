@@ -12,19 +12,38 @@ import 'package:GasTracker/services/places_service.dart';
 class TransitionPage extends StatelessWidget {
   final locatorService = GeoLocatorService();
   final placesService = PlacesService();
-  @override
 
+
+  @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
         FutureProvider(initialData: null,create: (context) => locatorService.determinePosition()),
-        ProxyProvider<Position,Future<List<Place>>?>(
+
+        ProxyProvider<Position,Future<List<Place>?>>(
           update: (context,position,places){
             return placesService.getPlaces(position.latitude, position.longitude);
           },
-        )
+        ),
+
+
+
+
+
       ],
       child: MaterialApp(
+        title: 'Gas Tracker',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: HomePage(),
+      ),
+    );
+  }
+
+
+  /*Widget build(BuildContext context) {
+      return MaterialApp(
         title: 'Gas Tracker',
         theme: ThemeData.dark().copyWith(
           platform: TargetPlatform.iOS,
@@ -32,8 +51,7 @@ class TransitionPage extends StatelessWidget {
           scaffoldBackgroundColor: kPrimaryColor,
         ),
         home: HomePage(),
-      ),
-    );
-  }
+      );
+  }*/
 
 }

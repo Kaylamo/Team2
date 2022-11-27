@@ -1,7 +1,13 @@
+import 'package:GasTracker/Views/loginScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
-import '/views/loginScreen.dart';
+import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import '/models/place.dart';
+import '/services/geolocator_service.dart';
+import '/services/places_service.dart';
+import 'package:provider/provider.dart';
 
 //import 'package:firebase_core/firebase_core.dart';
 
@@ -19,7 +25,7 @@ Future<void> main() async {
 
   await initialization(null);
   FlutterNativeSplash.removeAfter(initialization);
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 Future initialization(BuildContext? context) async {
@@ -27,8 +33,7 @@ await Future.delayed(Duration(seconds: 3));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
+  //const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -40,4 +45,13 @@ class MyApp extends StatelessWidget {
       home: LoginPage(),
     );
   }
+
+
+
+
+
+
+
+
+
 }

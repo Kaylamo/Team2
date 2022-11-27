@@ -42,4 +42,20 @@ class GeoLocatorService {
     // continue accessing the position of the device.
     return await Geolocator.getCurrentPosition();
   }
+
+  Future<double> getDistance(double startLatitude, double startLongitude, double endLatitude, double endLongitude)  async {
+    print("TESTING------------------------------------------------------------------------------ 1");
+    /*var meters = 0.0;
+    try{
+      meters =  Geolocator.distanceBetween(startLatitude, startLongitude, endLatitude, endLongitude);
+    } on Exception catch (e) {
+      print("ERRRRORRRRR-------------------------------------------- meters = " + e.toString());
+    }
+
+    print("TESTINGGGGGG-------------------------------------------- meters = " + meters.toString());*/
+    return 5.0;
+  }
+
+
+
 }
