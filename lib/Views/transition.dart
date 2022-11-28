@@ -26,10 +26,6 @@ class TransitionPage extends StatelessWidget {
           },
         ),
 
-
-
-
-
       ],
       child: MaterialApp(
         title: 'Gas Tracker',

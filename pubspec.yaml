@@ -44,6 +44,7 @@ dependencies:
   geolocator: ^9.0.2
   provider: ^6.0.4
   flutter_rating_bar: ^4.0.1
+  url_launcher: ^6.1.7
 
 dev_dependencies:
   flutter_test:
@@ -71,6 +72,7 @@ flutter:
   assets:
     - img/gastracker.PNG
     - img/redback.PNG
+    - img/gas_station_pin.PNG
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
