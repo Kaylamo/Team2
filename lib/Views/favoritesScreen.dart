@@ -1,3 +1,14 @@
+import 'package:flutter/material.dart';
+
+import 'package:GasTracker/utils/scroll_top_with_controller.dart' as scrollTop;
+
+import 'package:GasTracker/widgets/appbar_widget.dart';
+import 'package:GasTracker/widgets/profile_widget.dart';
+import 'edit_profile_page.dart';
+import 'package:GasTracker/widgets/numbers_widget.dart';
+import 'package:GasTracker/uservariables.dart';
+import 'package:GasTracker/views/homeScreen.dart';
+import 'package:GasTracker/utils/transition_variables.dart';
 import 'package:GasTracker/services/marker_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -12,10 +23,47 @@ import 'package:GasTracker/widgets/bottom_navigation_item.dart';
 import 'package:GasTracker/utils/navi.dart' as navi;
 import 'profileScreen.dart';
 import 'favoritesScreen.dart';
-import 'package:GasTracker/utils/mysearchdelegate.dart';
-import 'package:GasTracker/userVariables.dart';
-class HomePage extends StatelessWidget {
+
+class FavoritesScreen extends StatefulWidget {
+  final Color themeColor;
+
+  FavoritesScreen({required this.themeColor});
+
   @override
+  _FavoritesScreenState createState() => _FavoritesScreenState();
+}
+
+class _FavoritesScreenState extends State<FavoritesScreen> {
+  //for scroll uppingl;
+  late ScrollController _scrollController;
+
+  bool showBackToTopButton = false;
+
+  bool showLoadingScreen = false;
+
+  Future<void> loadData(String movieName) async {
+    setState(() {
+      scrollTop.scrollToTop(_scrollController);
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController()
+      ..addListener(() {
+        setState(() {
+          showBackToTopButton = (_scrollController.offset >= 200);
+        });
+      });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   Widget build(BuildContext context) {
     final currentPosition = Provider.of<Position>(context);
     final placesProvider = Provider.of<Future<List<Place>?>>(context);
@@ -30,13 +78,12 @@ class HomePage extends StatelessWidget {
             ? Consumer<List<Place>?>(
                 builder: (context, places, __) {
                   List<Marker> emptyMarkers = [];
-                  UserVariables.places = places;
                   var markers = (places != null)
                       ? markerService.getMarkers(places)
                       : emptyMarkers;
                   return (places != null)
                       ? Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Row(
                               children: <Widget>[
@@ -51,18 +98,17 @@ class HomePage extends StatelessWidget {
                                   ),
                                 ),
                                 BottomNavigationItem(
-                                  icon: Icon(Icons.star),
+                                  icon: Icon(Icons.map),
                                   iconSize: 28,
                                   onPressed: () => navi.newScreen(
                                     context: context,
-                                    newScreen: () => FavoritesScreen(
-                                      themeColor: Colors.red,
-                                    ),
+                                    newScreen: () => HomePage(),
                                   ),
                                 ),
                               ],
                             ),
-                            /* BottomNavigationItem(
+
+                            /*BottomNavigationItem(
                               icon: Icon(Icons.person),
                               iconSize: 28,
                               onPressed: () => navi.newScreen(
@@ -73,43 +119,15 @@ class HomePage extends StatelessWidget {
                               ),
                             ),
                             BottomNavigationItem(
-                              icon: Icon(Icons.star),
+                              icon: Icon(Icons.map),
                               iconSize: 28,
                               onPressed: () => navi.newScreen(
                                 context: context,
-                                newScreen: () => FavoritesScreen(
-                                  themeColor: Colors.red,
-                                ),
+                                newScreen: () => HomePage(),
                               ),
                             ),*/
-
-                            Container(
-                              height: MediaQuery.of(context).size.height / 2.5,
-                              width: MediaQuery.of(context).size.width,
-                              child: GoogleMap(
-                                initialCameraPosition: CameraPosition(
-                                    target: LatLng(currentPosition.latitude,
-                                        currentPosition.longitude),
-                                    zoom: 16.0),
-                                zoomGesturesEnabled: true,
-                                markers: Set<Marker>.of(markers),
-                              ),
-                            ),
-                            AppBar(
-                            foregroundColor: Colors.black,
-                            backgroundColor: Colors.white,
-                            title: const Text('Search'),
-                              actions: [
-                                IconButton(
-                                  icon: const Icon(Icons.search),
-                                  onPressed: () {
-                                    showSearch(
-                                      context: context,
-                                      delegate: MySearchDelegate(),
-                                    );
-                                  },
-                                ),
-                              ],
+                            SizedBox(
+                              height: 10.0,
                             ),
                             Expanded(
                               child: ListView.builder(
