@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
@@ -12,7 +13,9 @@ import 'package:path/path.dart';
 //import 'package:GasTracker/database/database_methods.dart';
 import 'package:GasTracker/uservariables.dart';
 import "profileScreen.dart";
-//import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:GasTracker/database/database_methods.dart';
+import 'package:GasTracker/globals.dart' as globals;
 
 class EditProfilePage extends StatefulWidget {
   @override
@@ -27,21 +30,21 @@ class _EditProfilePageState extends State<EditProfilePage> {
   String about = "";
   String newAbout = "";
   File? _photo;
-  //FirebaseStorage storage = FirebaseStorage.instance;
 
+  FirebaseStorage storage = FirebaseStorage.instance;
   TextEditingController _emailController = TextEditingController();
   TextEditingController _nameController = TextEditingController();
   TextEditingController _aboutController = TextEditingController();
   @override
   void initState() {
-    name =  UserVariables.myName;
-    email = UserVariables.myEmail;
-    imagePath = UserVariables.imagePath;
-    about = UserVariables.about;
+    name =  globals.myName;
+    email = globals.myEmail;
+    imagePath = globals.imagePath;
+    about = globals.about;
     super.initState();
   }
 
-  /*Future uploadFile() async {
+  Future uploadFile() async {
     if (_photo == null) return;
     final fileName = basename(_photo!.path);
     final destination = 'files/$fileName';
@@ -52,17 +55,19 @@ class _EditProfilePageState extends State<EditProfilePage> {
       final ref = storage
           .ref(destination)
           .child('file/');
+      print("made ref");
       await ref.putFile(_photo!);
-      final url = "https://firebasestorage.googleapis.com/v0/b/movietracker-59b7e.appspot.com/o/files%2F"+fileName+"%2Ffile?alt=media&token=20211ab3-d0d7-4609-bc27-a12313103c24";
-      await DatabaseMethods().setImagePath(UserVariables.userId, url);
+      final url = "https://firebasestorage.googleapis.com/v0/b/gas-tracker-93d2a.appspot.com/o/files%2F"+fileName+"%2Ffile?alt=media&token=725ac89e-e3ad-42e3-a6f6-db4e0df61422";
+      print("starting set image path");
+      await DatabaseMethods().setImagePath(globals.userId, url);
     } catch (e) {
-      print('error occured');
+      print('error occured   ' + e.toString());
     }
-  }*/
+  }
 
   @override
   Widget build(BuildContext context) {
-    about = UserVariables.about;
+    about = globals.about;
     return Scaffold(
       appBar: buildAppBar(context),
       body: ListView(
@@ -77,7 +82,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               setState(() {
                 if (pickedFile != null) {
                   _photo = File(pickedFile.path);
-                  //uploadFile();
+                  uploadFile();
                 } else {
                   print('No image selected.');
                 }
@@ -87,9 +92,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
               setState(() {
 
               });
-              /* setState(()  =>
-                  DatabaseMethods().setImagePath(
-                      UserVariables.userId, newImage.path));*/
             },
           ),
           const SizedBox(height: 24),
@@ -122,13 +124,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
               //UserPreferences.setUser(user);
               print("SAVINGGGG ----"+ _aboutController.text);
               if (_nameController.text != ""){
-                //await DatabaseMethods().setName(UserVariables.userId, _nameController.text);
+                await DatabaseMethods().setName(globals.userId, _nameController.text);
               }
               if (_emailController.text != ""){
-                //await DatabaseMethods().setEmail(UserVariables.userId, _emailController.text);
+                await DatabaseMethods().setEmail(globals.userId, _emailController.text);
               }
               if (_aboutController.text != ""){
-                //await DatabaseMethods().setAbout(UserVariables.userId, _aboutController.text);
+                await DatabaseMethods().setAbout(globals.userId, _aboutController.text);
               }
               Navigator.of(context).pop();
               Navigator.of(context).push(

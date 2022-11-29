@@ -9,19 +9,20 @@ import '/services/geolocator_service.dart';
 import '/services/places_service.dart';
 import 'package:provider/provider.dart';
 
-//import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  /*await Firebase.initializeApp(
+  await Firebase.initializeApp(
     options: const FirebaseOptions(
-      apiKey: "AIzaSyCvgFPhbcepHuCSRAnUVpJvCRT1gZG8bik",
-      appId: "1:119620639374:android:f0020e2fde59122b06c7df",
-      messagingSenderId: "119620639374",
-      projectId: "-59b7e",
+      apiKey: "AIzaSyCWkRATxvHxv64tqGuEljf5XBjWzMG0x80",
+      appId: "1:201221229888:web:84481b4391a0650df83ea5",
+      messagingSenderId: "201221229888",
+      projectId: "gas-tracker-93d2a",
+      storageBucket: "gas-tracker-93d2a.appspot.com"
     ),
-  );*/
+  );
 
   await initialization(null);
   FlutterNativeSplash.removeAfter(initialization);

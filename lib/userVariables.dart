@@ -1,10 +1,10 @@
 class UserVariables{
 
-  static String myName = "John Doe";
-  static String myEmail = "jdoe@doe.com";
-  static String userId = "123123";
-  static String about = "I love gas.";
-  static String imagePath = "https://static.vecteezy.com/system/resources/previews/002/318/271/original/user-profile-icon-free-vector.jpg";
+  static String myName = "";
+  static String myEmail = "";
+  static String userId = "";
+  static String about = "";
+  static String imagePath = "https://firebasestorage.googleapis.com/v0/b/gas-tracker-93d2a.appspot.com/o/profile_icon.jpg?alt=media&token=07ba0540-7c44-4c5f-9ec5-09aad79ee97c";
   static var places;
 
 }

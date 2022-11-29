@@ -11,7 +11,9 @@ import 'package:GasTracker/uservariables.dart';
 import 'package:GasTracker/views/homeScreen.dart';
 import 'package:GasTracker/utils/transition_variables.dart';
 import 'favoritesScreen.dart';
-
+import 'package:GasTracker/database/database_methods.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:GasTracker/globals.dart' as globals;
 
 
 class ProfileScreen extends StatefulWidget {
@@ -24,10 +26,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  String name = "";
-  String email = "";
-  String imagePath = "";
-  String about = "";
 
 
   //for scroll uppingl;
@@ -36,18 +34,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   bool showLoadingScreen = false;
 
-  Future<void> loadData(String movieName) async {
-    setState(() {
-      scrollTop.scrollToTop(_scrollController);
-    });
-  }
 
   @override
-  void initState() {
-    name = UserVariables.myName;
-    email = UserVariables.myEmail;
-    imagePath = UserVariables.imagePath;
-    about = UserVariables.about;
+  void initState()  {
     super.initState();
     _scrollController = ScrollController()
       ..addListener(() {
@@ -65,15 +54,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    name = UserVariables.myName;
-    email = UserVariables.myEmail;
-    imagePath = UserVariables.imagePath;
-    about = UserVariables.about;
+    String name = globals.myName;
+    String email = globals.myEmail;
+    String imagePath = globals.imagePath;
+    String about = globals.about;
+    print("BUILD PROFILE PAGE ------------------------------------------------------ NAME = " + name);
     if (about == "") {
       about = "Edit your profile to add a Bio";
     }
     var subscriptionCount = 999;
-    return Scaffold(
+
+
+    return (name != "") ? Scaffold(
       appBar: buildAppBar(context),
       body: ListView(
         physics: BouncingScrollPhysics(),
@@ -119,6 +111,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           buildAbout(about),
         ],
       ),
+    ) : Center(
+      child: CircularProgressIndicator(),
     );
   }
 

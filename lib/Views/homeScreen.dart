@@ -14,7 +14,47 @@ import 'profileScreen.dart';
 import 'favoritesScreen.dart';
 import 'package:GasTracker/utils/mysearchdelegate.dart';
 import 'package:GasTracker/userVariables.dart';
-class HomePage extends StatelessWidget {
+import 'package:GasTracker/database/database_methods.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:GasTracker/globals.dart' as globals;
+
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
+  @override
+  HomePageState createState() => HomePageState();
+}
+
+class HomePageState extends State<HomePage> {
+  getUserInfo() async {
+    print(
+        "SETTING USER VARIABLES ------------------------------------------------");
+    DatabaseMethods databaseMethods = new DatabaseMethods();
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    User? user = auth.currentUser;
+    if (user != null) {
+      UserVariables.myName = await databaseMethods.getName(user.uid);
+      UserVariables.myEmail = await databaseMethods.getEmail(user.uid);
+      UserVariables.imagePath = await databaseMethods.getImagePath(user.uid);
+      UserVariables.about = await databaseMethods.getAbout(user.uid);
+      UserVariables.userId = user.uid;
+
+      globals.myName = await databaseMethods.getName(user.uid);
+      globals.myEmail = await databaseMethods.getEmail(user.uid);
+      globals.imagePath = await databaseMethods.getImagePath(user.uid);
+      globals.about = await databaseMethods.getAbout(user.uid);
+      globals.userId = user.uid;
+    }
+    print("USER VARIABLES WERE SET ---------------------------" +
+        UserVariables.myName);
+  }
+
+  @override
+  void initState() {
+    getUserInfo();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final currentPosition = Provider.of<Position>(context);
@@ -31,6 +71,8 @@ class HomePage extends StatelessWidget {
                 builder: (context, places, __) {
                   List<Marker> emptyMarkers = [];
                   UserVariables.places = places;
+                  print(
+                      "TEST ------------------------------------------------------------------ 2");
                   var markers = (places != null)
                       ? markerService.getMarkers(places)
                       : emptyMarkers;
@@ -96,9 +138,9 @@ class HomePage extends StatelessWidget {
                               ),
                             ),
                             AppBar(
-                            foregroundColor: Colors.black,
-                            backgroundColor: Colors.white,
-                            title: const Text('Search'),
+                              foregroundColor: Colors.black,
+                              backgroundColor: Colors.white,
+                              title: const Text('Search'),
                               actions: [
                                 IconButton(
                                   icon: const Icon(Icons.search),
@@ -168,21 +210,33 @@ class HomePage extends StatelessWidget {
                                               }) // consumer
                                             ], // widget
                                           ),
-                                          trailing: IconButton(
-                                            iconSize: 30,
-                                            icon: Icon(Icons.directions),
-                                            color: Colors.redAccent,
-                                            onPressed: () {
-                                              _launchMapsUrl(
-                                                  places[index]
-                                                      .geometry!
-                                                      .location!
-                                                      .lat,
-                                                  places[index]
-                                                      .geometry!
-                                                      .location!
-                                                      .lng);
-                                            },
+                                          trailing: Wrap(
+                                            spacing: 12,
+                                            children: <Widget>[
+                                              IconButton(
+                                                iconSize: 30,
+                                                icon: Icon(Icons.star_border),
+                                                color: Colors.redAccent,
+                                                onPressed: () {
+                                                },
+                                              ),
+                                              IconButton(
+                                                iconSize: 30,
+                                                icon: Icon(Icons.directions),
+                                                color: Colors.redAccent,
+                                                onPressed: () {
+                                                  _launchMapsUrl(
+                                                      places[index]
+                                                          .geometry!
+                                                          .location!
+                                                          .lat,
+                                                      places[index]
+                                                          .geometry!
+                                                          .location!
+                                                          .lng);
+                                                },
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ),
@@ -191,7 +245,9 @@ class HomePage extends StatelessWidget {
                             )
                           ],
                         )
-                      : Center(child: CircularProgressIndicator());
+                      : Center(
+                          child: CircularProgressIndicator(),
+                        );
                 },
               )
             : Center(

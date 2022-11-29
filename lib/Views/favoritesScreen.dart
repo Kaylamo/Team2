@@ -1,3 +1,4 @@
+import 'package:GasTracker/models/user.dart';
 import 'package:flutter/material.dart';
 
 import 'package:GasTracker/utils/scroll_top_with_controller.dart' as scrollTop;
@@ -23,6 +24,7 @@ import 'package:GasTracker/widgets/bottom_navigation_item.dart';
 import 'package:GasTracker/utils/navi.dart' as navi;
 import 'profileScreen.dart';
 import 'favoritesScreen.dart';
+import 'package:GasTracker/uservariables.dart';
 
 class FavoritesScreen extends StatefulWidget {
   final Color themeColor;
@@ -49,6 +51,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
 
   @override
   void initState() {
+    String name = UserVariables.myName;
+    print("INIT FAVORITES SCREEN _________________________________________________ name = " + name);
     super.initState();
     _scrollController = ScrollController()
       ..addListener(() {
