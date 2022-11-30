@@ -62,7 +62,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if (about == "") {
       about = "Edit your profile to add a Bio";
     }
-    var subscriptionCount = 999;
 
 
     return (name != "") ? Scaffold(
@@ -96,7 +95,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  "99",
+                  (globals.favoritesCount == "") ? "0" : globals.favoritesCount,
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
                 ),
                 SizedBox(height: 2),

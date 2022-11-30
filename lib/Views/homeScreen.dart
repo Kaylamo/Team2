@@ -1,3 +1,4 @@
+import 'package:GasTracker/Views/gasStationDetails.dart';
 import 'package:GasTracker/services/marker_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -18,6 +19,7 @@ import 'package:GasTracker/database/database_methods.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:GasTracker/globals.dart' as globals;
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -44,15 +46,21 @@ class HomePageState extends State<HomePage> {
       globals.myEmail = await databaseMethods.getEmail(user.uid);
       globals.imagePath = await databaseMethods.getImagePath(user.uid);
       globals.about = await databaseMethods.getAbout(user.uid);
+      globals.favoritesCount =
+          await databaseMethods.getFavoritesCount(user.uid);
       setState(() {});
     }
     print("USER VARIABLES WERE SET ---------------------------" +
         UserVariables.myName);
   }
 
-  addFavorite(placeId) async{
+  addFavorite(placeId) async {
     String userId = globals.userId;
-    print("adding favorites    userId= " + userId + "      placeId = " + placeId + "-------------------------------------------------");
+    print("adding favorites    userId= " +
+        userId +
+        "      placeId = " +
+        placeId +
+        "-------------------------------------------------");
     /* Map<String, dynamic> favoritesMessageMap = {
       "placeId": placeId
     };   */
@@ -60,8 +68,8 @@ class HomePageState extends State<HomePage> {
         .collection("users")
         .doc(userId)
         .collection("favorites")
-        .doc(placeId).set({"placeId": placeId})
-        .catchError((e) {
+        .doc(placeId)
+        .set({"placeId": placeId}).catchError((e) {
       print("ERRORR ADDING FAVORITE --------------" + e.toString());
     });
     globals.favorites.add(placeId);
@@ -78,7 +86,8 @@ class HomePageState extends State<HomePage> {
         .collection("users")
         .doc(userId)
         .collection("favorites")
-        .doc(placeId).delete();
+        .doc(placeId)
+        .delete();
     globals.favorites.remove(placeId);
     await DatabaseMethods().updateFavoritesCount(userId, -1);
     print("REMOVE FAVORITE ____ SET STATE ----------------------------------");
@@ -107,8 +116,6 @@ class HomePageState extends State<HomePage> {
                 builder: (context, places, __) {
                   List<Marker> emptyMarkers = [];
                   UserVariables.places = places;
-                  print(
-                      "TEST ------------------------------------------------------------------ 2");
                   var markers = (places != null)
                       ? markerService.getMarkers(places)
                       : emptyMarkers;
@@ -137,6 +144,15 @@ class HomePageState extends State<HomePage> {
                                       themeColor: Colors.red,
                                     ),
                                   ),
+                                ),
+                                SizedBox(width: 25),
+                                Text(
+                                  "Gas Tracker",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.redAccent,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20),
                                 ),
                               ],
                             ),
@@ -250,16 +266,38 @@ class HomePageState extends State<HomePage> {
                                             spacing: 12,
                                             children: <Widget>[
                                               IconButton(
+                                                padding: EdgeInsets.symmetric(vertical: 10),
+                                                iconSize: 27,
+                                                icon: Icon(Icons.info_outline),
+                                                color: Colors.redAccent,
+                                                onPressed: () => navi.newScreen(
+                                                  context: context,
+                                                  newScreen: () =>
+                                                      DetailsScreen(
+                                                    place: places[index],
+                                                  ),
+                                                ),
+                                              ),
+                                              IconButton(
                                                 iconSize: 30,
-                                                icon: (DatabaseMethods().placeIsFavorited(places[index].placeId)) ? Icon(Icons.star) : Icon(Icons.star_border),
+                                                icon: (DatabaseMethods()
+                                                        .placeIsFavorited(
+                                                            places[index]
+                                                                .placeId))
+                                                    ? Icon(Icons.star)
+                                                    : Icon(Icons.star_border),
                                                 color: Colors.redAccent,
                                                 onPressed: () async {
-                                                  if (DatabaseMethods().placeIsFavorited(places[index].placeId)){
-                                                        await removeFavorite(places[index].placeId);
+                                                  if (DatabaseMethods()
+                                                      .placeIsFavorited(
+                                                          places[index]
+                                                              .placeId)) {
+                                                    await removeFavorite(
+                                                        places[index].placeId);
                                                   } else {
-                                                       await addFavorite(places[index].placeId);
+                                                    await addFavorite(
+                                                        places[index].placeId);
                                                   }
-
                                                 },
                                               ),
                                               IconButton(

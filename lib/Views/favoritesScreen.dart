@@ -174,7 +174,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                               height: 10.0,
                             ),
                             Expanded(
-                              child: ListView.builder(
+                              child: (globals.favorites.length == 0 )? Text("No Favorites Found") : ListView.builder(
                                   itemCount: globals.favorites.length,
                                   itemBuilder: (context, index) {
                                     return FutureProvider(
