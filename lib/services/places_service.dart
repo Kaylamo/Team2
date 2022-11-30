@@ -23,6 +23,11 @@ class PlacesService {
 
     var jsonResults = json['results'] as List;
 
+
+
+
+
+
     print("GETTING PLACES -----------------------------------");
     return jsonResults.map((place) => Place.fromJson(place)).toList();
   }

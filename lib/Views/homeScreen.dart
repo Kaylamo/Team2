@@ -1,11 +1,11 @@
 import 'package:GasTracker/Views/gasStationDetails.dart';
 import 'package:GasTracker/services/marker_service.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:geolocator/geolocator.dart';
 import '/models/place.dart';
-import 'package:GasTracker/services/places_service.dart';
 import '/services/geolocator_service.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -146,14 +146,17 @@ class HomePageState extends State<HomePage> {
                                   ),
                                 ),
                                 SizedBox(width: 25),
-                                Text(
-                                  "Gas Tracker",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Colors.redAccent,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20),
-                                ),
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: Text(
+                                    "Gas Tracker",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Colors.redAccent,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  ),
+                                )
                               ],
                             ),
                             /* BottomNavigationItem(
@@ -230,7 +233,7 @@ class HomePageState extends State<HomePage> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: <Widget>[
-                                              (places[index].rating != null)
+                                              (places[index].rating != 0.0)
                                                   ? Row(children: <Widget>[
                                                       SizedBox(
                                                         height: 3,
@@ -266,7 +269,8 @@ class HomePageState extends State<HomePage> {
                                             spacing: 12,
                                             children: <Widget>[
                                               IconButton(
-                                                padding: EdgeInsets.symmetric(vertical: 10),
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 10),
                                                 iconSize: 27,
                                                 icon: Icon(Icons.info_outline),
                                                 color: Colors.redAccent,

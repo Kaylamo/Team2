@@ -198,7 +198,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: <Widget>[
-                                              (places[index].rating != null)
+                                              (places[index].rating != 0.0)
                                                   ? Row(children: <Widget>[
                                                       SizedBox(
                                                         height: 3,

@@ -1,8 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:GasTracker/userVariables.dart';
+
 import 'package:GasTracker/globals.dart' as globals;
 
+
+
 class DatabaseMethods {
+
+
 
  bool placeIsFavorited(placeId) {
     print("IS PLACE IN FAVORITES -------------- " + placeId);
