@@ -1,4 +1,5 @@
 import 'package:geolocator/geolocator.dart';
+import 'package:GasTracker/database/database_methods.dart';
 
 /// Determine the current position of the device.
 ///
@@ -44,15 +45,13 @@ class GeoLocatorService {
   }
 
   Future<double> getDistance(double startLatitude, double startLongitude, double endLatitude, double endLongitude)  async {
-    print("TESTING--------------------------777777777777777---------------------------------------------------- 1");
     var meters = 0.0;
     try{
       meters =  Geolocator.distanceBetween(startLatitude, startLongitude, endLatitude, endLongitude);
     } on Exception catch (e) {
-      print("ERRRRORRRRR-------------------------------------------- meters = " + e.toString());
+      print("ERROR ---- " + e.toString());
     }
-
-    print("TESTINGGGGGG-------------------------------------------- meters = " + meters.toString());
+    DatabaseMethods().getFavorites();
     return meters;
   }
 

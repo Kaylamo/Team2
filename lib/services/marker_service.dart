@@ -5,7 +5,7 @@ class MarkerService {
 
   List<Marker> getMarkers(List<Place> places){
     List<Marker> markers = [];
-
+    print("TRYING TO GET  MARKERS ----------------------------------------------");
     places.forEach((place){
       Marker marker = Marker(
           markerId: MarkerId(place.name!),
@@ -16,7 +16,7 @@ class MarkerService {
 
       markers.add(marker);
     });
-
+    print("RETURNING MARKERS ----------------------------------------------");
     return markers;
   }
 }

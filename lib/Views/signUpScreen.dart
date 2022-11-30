@@ -29,7 +29,7 @@ class SignUpPage extends StatelessWidget {
           'registrationDatetime':  myDateTime,
           "about": "",
           "imagePath": "https://static.vecteezy.com/system/resources/previews/002/318/271/original/user-profile-icon-free-vector.jpg",
-          "subscriptionCount": 0
+          "favoritesCount": 0
         });
       }
     } on FirebaseAuthException catch (e){

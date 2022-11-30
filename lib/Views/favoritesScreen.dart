@@ -25,6 +25,9 @@ import 'package:GasTracker/utils/navi.dart' as navi;
 import 'profileScreen.dart';
 import 'favoritesScreen.dart';
 import 'package:GasTracker/uservariables.dart';
+import 'package:GasTracker/database/database_methods.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:GasTracker/globals.dart' as globals;
 
 class FavoritesScreen extends StatefulWidget {
   final Color themeColor;
@@ -49,10 +52,47 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     });
   }
 
+  addFavorite(placeId) async{
+    String userId = globals.userId;
+    print("adding favorites    userId= " + userId + "      placeId = " + placeId + "-------------------------------------------------");
+    /* Map<String, dynamic> favoritesMessageMap = {
+      "placeId": placeId
+    };   */
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(userId)
+        .collection("favorites")
+        .doc(placeId).set({"placeId": placeId})
+        .catchError((e) {
+      print("ERRORR ADDING FAVORITE --------------" + e.toString());
+    });
+    globals.favorites.add(placeId);
+    print("Favorite added - ---------------------------- -- userId =" + userId);
+    await DatabaseMethods().updateFavoritesCount(userId, 1);
+    print("count updated -------------------------------------------------");
+    setState(() {});
+  }
+
+  removeFavorite(placeId) async {
+    print("REMOVE FAVORITE -------------------------------------------");
+    String userId = globals.userId;
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(userId)
+        .collection("favorites")
+        .doc(placeId).delete();
+    globals.favorites.remove(placeId);
+    await DatabaseMethods().updateFavoritesCount(userId, -1);
+    print("REMOVE FAVORITE ____ SET STATE ----------------------------------");
+    setState(() {});
+  }
+
   @override
   void initState() {
     String name = UserVariables.myName;
-    print("INIT FAVORITES SCREEN _________________________________________________ name = " + name);
+    print(
+        "INIT FAVORITES SCREEN _________________________________________________ name = " +
+            name);
     super.initState();
     _scrollController = ScrollController()
       ..addListener(() {
@@ -135,7 +175,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                             ),
                             Expanded(
                               child: ListView.builder(
-                                  itemCount: places.length,
+                                  itemCount: globals.favorites.length,
                                   itemBuilder: (context, index) {
                                     return FutureProvider(
                                       initialData: 0.0,
@@ -151,7 +191,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                                                   .geometry!
                                                   .location!
                                                   .lng!),
-                                      child: Card(
+                                      child: (DatabaseMethods().placeIsFavorited(places[index].placeId)) ? Card(
                                         child: ListTile(
                                           title: Text(places[index].name!),
                                           subtitle: Column(
@@ -190,24 +230,51 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                                               }) // consumer
                                             ], // widget
                                           ),
-                                          trailing: IconButton(
-                                            iconSize: 30,
-                                            icon: Icon(Icons.directions),
-                                            color: Colors.redAccent,
-                                            onPressed: () {
-                                              _launchMapsUrl(
-                                                  places[index]
-                                                      .geometry!
-                                                      .location!
-                                                      .lat,
-                                                  places[index]
-                                                      .geometry!
-                                                      .location!
-                                                      .lng);
-                                            },
+                                          trailing: Wrap(
+                                            spacing: 12,
+                                            children: <Widget>[
+                                              IconButton(
+                                                iconSize: 30,
+                                                icon: (DatabaseMethods()
+                                                        .placeIsFavorited(
+                                                            places[index]
+                                                                .placeId))
+                                                    ? Icon(Icons.star)
+                                                    : Icon(Icons.star_border),
+                                                color: Colors.redAccent,
+                                                onPressed: () async {
+                                                  if (DatabaseMethods()
+                                                      .placeIsFavorited(
+                                                          places[index]
+                                                              .placeId)) {
+                                                    await removeFavorite(
+                                                        places[index].placeId);
+                                                  } else {
+                                                    await addFavorite(
+                                                        places[index].placeId);
+                                                  }
+                                                },
+                                              ),
+                                              IconButton(
+                                                iconSize: 30,
+                                                icon: Icon(Icons.directions),
+                                                color: Colors.redAccent,
+                                                onPressed: () {
+                                                  _launchMapsUrl(
+                                                      places[index]
+                                                          .geometry!
+                                                          .location!
+                                                          .lat,
+                                                      places[index]
+                                                          .geometry!
+                                                          .location!
+                                                          .lng);
+                                                },
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                      ),
+                                      ) : Card(),
                                     );
                                   }),
                             )

@@ -17,7 +17,7 @@ import 'package:GasTracker/userVariables.dart';
 import 'package:GasTracker/database/database_methods.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:GasTracker/globals.dart' as globals;
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -33,20 +33,56 @@ class HomePageState extends State<HomePage> {
     final FirebaseAuth auth = FirebaseAuth.instance;
     User? user = auth.currentUser;
     if (user != null) {
+      globals.userId = user.uid;
+      databaseMethods.getFavorites();
       UserVariables.myName = await databaseMethods.getName(user.uid);
       UserVariables.myEmail = await databaseMethods.getEmail(user.uid);
       UserVariables.imagePath = await databaseMethods.getImagePath(user.uid);
       UserVariables.about = await databaseMethods.getAbout(user.uid);
       UserVariables.userId = user.uid;
-
       globals.myName = await databaseMethods.getName(user.uid);
       globals.myEmail = await databaseMethods.getEmail(user.uid);
       globals.imagePath = await databaseMethods.getImagePath(user.uid);
       globals.about = await databaseMethods.getAbout(user.uid);
-      globals.userId = user.uid;
+      setState(() {});
     }
     print("USER VARIABLES WERE SET ---------------------------" +
         UserVariables.myName);
+  }
+
+  addFavorite(placeId) async{
+    String userId = globals.userId;
+    print("adding favorites    userId= " + userId + "      placeId = " + placeId + "-------------------------------------------------");
+    /* Map<String, dynamic> favoritesMessageMap = {
+      "placeId": placeId
+    };   */
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(userId)
+        .collection("favorites")
+        .doc(placeId).set({"placeId": placeId})
+        .catchError((e) {
+      print("ERRORR ADDING FAVORITE --------------" + e.toString());
+    });
+    globals.favorites.add(placeId);
+    print("Favorite added - ---------------------------- -- userId =" + userId);
+    await DatabaseMethods().updateFavoritesCount(userId, 1);
+    print("count updated -------------------------------------------------");
+    setState(() {});
+  }
+
+  removeFavorite(placeId) async {
+    print("REMOVE FAVORITE -------------------------------------------");
+    String userId = globals.userId;
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(userId)
+        .collection("favorites")
+        .doc(placeId).delete();
+    globals.favorites.remove(placeId);
+    await DatabaseMethods().updateFavoritesCount(userId, -1);
+    print("REMOVE FAVORITE ____ SET STATE ----------------------------------");
+    setState(() {});
   }
 
   @override
@@ -215,9 +251,15 @@ class HomePageState extends State<HomePage> {
                                             children: <Widget>[
                                               IconButton(
                                                 iconSize: 30,
-                                                icon: Icon(Icons.star_border),
+                                                icon: (DatabaseMethods().placeIsFavorited(places[index].placeId)) ? Icon(Icons.star) : Icon(Icons.star_border),
                                                 color: Colors.redAccent,
-                                                onPressed: () {
+                                                onPressed: () async {
+                                                  if (DatabaseMethods().placeIsFavorited(places[index].placeId)){
+                                                        await removeFavorite(places[index].placeId);
+                                                  } else {
+                                                       await addFavorite(places[index].placeId);
+                                                  }
+
                                                 },
                                               ),
                                               IconButton(
