@@ -11,8 +11,8 @@ class SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: Themes.light(), // Provide light theme.
-      darkTheme: Themes.dark(), // Provide dark theme.
+      theme: Themes.light, // Provide light theme.
+      darkTheme: Themes.dark, // Provide dark theme.
       themeMode: ThemeMode.system,
       home: Scaffold(
         appBar: AppBar(
@@ -22,7 +22,7 @@ class SettingsPageState extends State<SettingsPage> {
               child: SwitchScreen()
           ),
         ),
-      ),
+      //),
     );
   }
 }
