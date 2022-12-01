@@ -8,7 +8,7 @@ class NumbersWidget extends StatelessWidget {
   Widget build(BuildContext context) => Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: <Widget>[
-      buildButton(context, subscriptionCount, 'Subscriptions'),
+      buildButton(context, subscriptionCount, 'Favorites'),
     ],
   );
   Widget buildDivider() => Container(

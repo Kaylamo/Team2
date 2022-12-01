@@ -21,11 +21,12 @@ class ProfileWidget extends StatelessWidget {
       child: Stack(
         children: [
           buildImage(),
-          Positioned(
+
+          (isEdit) ? Positioned(
             bottom: 0,
             right: 4,
             child: buildEditIcon(Colors.black),
-          ),
+          ) : SizedBox(height: 0,),
         ],
       ),
     );

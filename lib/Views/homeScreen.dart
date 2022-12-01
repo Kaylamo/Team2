@@ -1,3 +1,5 @@
+
+
 import 'package:GasTracker/Views/gasStationDetails.dart';
 import 'package:GasTracker/services/marker_service.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,6 +21,7 @@ import 'package:GasTracker/database/database_methods.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:GasTracker/globals.dart' as globals;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:GasTracker/Views/profile_page_new.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -29,8 +32,6 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> {
   getUserInfo() async {
-    print(
-        "SETTING USER VARIABLES ------------------------------------------------");
     DatabaseMethods databaseMethods = new DatabaseMethods();
     final FirebaseAuth auth = FirebaseAuth.instance;
     User? user = auth.currentUser;
@@ -46,21 +47,15 @@ class HomePageState extends State<HomePage> {
       globals.myEmail = await databaseMethods.getEmail(user.uid);
       globals.imagePath = await databaseMethods.getImagePath(user.uid);
       globals.about = await databaseMethods.getAbout(user.uid);
+      globals.joinDate = await databaseMethods.getJoinDate(user.uid);
       globals.favoritesCount =
           await databaseMethods.getFavoritesCount(user.uid);
       setState(() {});
     }
-    print("USER VARIABLES WERE SET ---------------------------" +
-        UserVariables.myName);
   }
 
   addFavorite(placeId) async {
     String userId = globals.userId;
-    print("adding favorites    userId= " +
-        userId +
-        "      placeId = " +
-        placeId +
-        "-------------------------------------------------");
     /* Map<String, dynamic> favoritesMessageMap = {
       "placeId": placeId
     };   */
@@ -70,17 +65,14 @@ class HomePageState extends State<HomePage> {
         .collection("favorites")
         .doc(placeId)
         .set({"placeId": placeId}).catchError((e) {
-      print("ERRORR ADDING FAVORITE --------------" + e.toString());
+      print("ERROR - " + e.toString());
     });
     globals.favorites.add(placeId);
-    print("Favorite added - ---------------------------- -- userId =" + userId);
     await DatabaseMethods().updateFavoritesCount(userId, 1);
-    print("count updated -------------------------------------------------");
     setState(() {});
   }
 
   removeFavorite(placeId) async {
-    print("REMOVE FAVORITE -------------------------------------------");
     String userId = globals.userId;
     FirebaseFirestore.instance
         .collection("users")
@@ -90,7 +82,6 @@ class HomePageState extends State<HomePage> {
         .delete();
     globals.favorites.remove(placeId);
     await DatabaseMethods().updateFavoritesCount(userId, -1);
-    print("REMOVE FAVORITE ____ SET STATE ----------------------------------");
     setState(() {});
   }
 
@@ -125,16 +116,16 @@ class HomePageState extends State<HomePage> {
                           children: <Widget>[
                             Row(
                               children: <Widget>[
+                                SizedBox(width: 2),
                                 BottomNavigationItem(
                                   icon: Icon(Icons.person),
                                   iconSize: 28,
                                   onPressed: () => navi.newScreen(
                                     context: context,
-                                    newScreen: () => ProfileScreen(
-                                      themeColor: Colors.red,
-                                    ),
+                                    newScreen: () => ProfilePageNew(),
                                   ),
                                 ),
+                                SizedBox(width: 5),
                                 BottomNavigationItem(
                                   icon: Icon(Icons.star),
                                   iconSize: 28,
@@ -159,27 +150,6 @@ class HomePageState extends State<HomePage> {
                                 )
                               ],
                             ),
-                            /* BottomNavigationItem(
-                              icon: Icon(Icons.person),
-                              iconSize: 28,
-                              onPressed: () => navi.newScreen(
-                                context: context,
-                                newScreen: () => ProfileScreen(
-                                  themeColor: Colors.red,
-                                ),
-                              ),
-                            ),
-                            BottomNavigationItem(
-                              icon: Icon(Icons.star),
-                              iconSize: 28,
-                              onPressed: () => navi.newScreen(
-                                context: context,
-                                newScreen: () => FavoritesScreen(
-                                  themeColor: Colors.red,
-                                ),
-                              ),
-                            ),*/
-
                             Container(
                               height: MediaQuery.of(context).size.height / 2.5,
                               width: MediaQuery.of(context).size.width,

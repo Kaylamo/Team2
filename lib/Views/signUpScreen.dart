@@ -33,10 +33,10 @@ class SignUpPage extends StatelessWidget {
         });
       }
     } on FirebaseAuthException catch (e){
-      print ("ERORR IN ACCOUNT CREATION ---------------------------------------------------------------------" + e.toString()) ;
+      print ("ERORR IN ACCOUNT CREATION - " + e.toString()) ;
       return null;
     }
-    print("CREATED FIREBASE USER SUCCESSFULLY ----------------------------------------------------------------");
+
     return user;
   }
   final TextEditingController emailController = TextEditingController();

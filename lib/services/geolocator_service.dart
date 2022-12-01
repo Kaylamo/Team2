@@ -41,7 +41,7 @@ class GeoLocatorService {
 
     // When we reach here, permissions are granted and we can
     // continue accessing the position of the device.
-    return await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    return await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
   }
 
   Future<double> getDistance(double startLatitude, double startLongitude, double endLatitude, double endLongitude)  async {
@@ -49,7 +49,7 @@ class GeoLocatorService {
     try{
       meters =  Geolocator.distanceBetween(startLatitude, startLongitude, endLatitude, endLongitude);
     } on Exception catch (e) {
-      print("ERROR ---- " + e.toString());
+      print("ERROR - " + e.toString());
     }
     DatabaseMethods().getFavorites();
     return meters;

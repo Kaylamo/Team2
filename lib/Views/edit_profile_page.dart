@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:GasTracker/Views/profile_page_new.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -114,7 +115,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           TextField(
             controller: _aboutController,
             decoration: InputDecoration(
-              hintText: "About: " + about,
+              hintText: "GasType: " + about,
             ),
           ),
           const SizedBox(height: 24),
@@ -122,7 +123,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
             text: 'Save',
             onClicked: () async {
               //UserPreferences.setUser(user);
-              print("SAVINGGGG ----"+ _aboutController.text);
               if (_nameController.text != ""){
                 await DatabaseMethods().setName(globals.userId, _nameController.text);
               }
@@ -134,7 +134,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               }
               Navigator.of(context).pop();
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => ProfileScreen(themeColor: Theme.of(context).colorScheme.primary)),
+                MaterialPageRoute(builder: (context) => ProfilePageNew()),
               );
             },
           ),

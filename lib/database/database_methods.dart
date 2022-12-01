@@ -9,9 +9,7 @@ class DatabaseMethods {
 
 
  bool placeIsFavorited(placeId) {
-    print("IS PLACE IN FAVORITES -------------- " + placeId);
     if (globals.favorites.contains(placeId)){
-      print("PLACE IS IN FAOVRITES ---------------------------------------------------");
       return true;
     } else {
       return false;
@@ -21,7 +19,6 @@ class DatabaseMethods {
   addFavorite(placeId) async{
 
     String userId = globals.userId;
-    print("adding favorites    userId= " + userId + "      placeId = " + placeId + "-------------------------------------------------");
    /* Map<String, dynamic> favoritesMessageMap = {
       "placeId": placeId
     };   */
@@ -31,15 +28,12 @@ class DatabaseMethods {
         .collection("favorites")
         .doc(placeId).set({"placeId": placeId})
         .catchError((e) {
-      print("ERRORR ADDING FAVORITE --------------" + e.toString());
+      print("ERROR ---" + e.toString());
     });
     globals.favorites.add(placeId);
-    print("Favorite added - ---------------------------- -- userId =" + userId);
     await updateFavoritesCount(userId, 1);
-    print("count updated -------------------------------------------------");
   }
   getFavorites() async {
-    print("getting favorites -------------------------------------------------");
     String userId = globals.userId;
     if(userId == null || userId == ""){
       return;
@@ -56,13 +50,11 @@ class DatabaseMethods {
     if(placeIds == null){
       globals.favorites =  [" "];
     } else {
-      print("found favorites -------------------------------------------------");
       globals.favorites  = placeIds;
     }
 
   }
   getFavoritesCount(String uid) async {
-    print("getting favorite count ------------------------------------------------- uid = " + uid);
     var count;
     var data;
     await FirebaseFirestore.instance.collection("users").doc(uid).get().then ((DocumentSnapshot ds){
@@ -75,15 +67,12 @@ class DatabaseMethods {
       count = "0";
     }
     globals.favoritesCount = count.toString();
-    print("got favorites count ----------------          count = " + count.toString());
   return count.toString();
 }
 
 
   updateFavoritesCount(String uid, int change) async {
-    print("UPDATE FAVORITES 1----------------------- uid = " + uid);
     var currCount = await getFavoritesCount(uid);
-    print("UPDATE FAVORITES 2----------------------- CURRECOUNT = " + currCount);
     int newCount = int.parse(currCount) + change;
     await FirebaseFirestore.instance.collection("users").doc(uid).update({
       "favoritesCount": newCount.toString()
@@ -92,6 +81,21 @@ class DatabaseMethods {
   }
 
 
+    getJoinDate(String? uid) async {
+       Timestamp? date;
+       var data;
+       await FirebaseFirestore.instance.collection("users").doc(uid).get().then ((DocumentSnapshot ds){
+         data = ds.data();
+       });
+       if(data != null){
+         date = data["registrationDatetime"];
+       }
+       var datetime;
+       datetime = DateTime.fromMillisecondsSinceEpoch(date!.millisecondsSinceEpoch);
+
+       var dateString = "${datetime.month} - ${datetime.day} - ${datetime.year}";
+       return dateString;
+    }
 
   getName(String? uid) async {
     var name = "";
@@ -146,7 +150,6 @@ class DatabaseMethods {
 
   setAbout(String? uid, aboutText) async {
     globals.about = aboutText;
-    print("SET ABOUT -----" + aboutText);
 
     await FirebaseFirestore.instance.collection("users").doc(uid).update({
       "about": aboutText

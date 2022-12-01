@@ -49,9 +49,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
     var json = convert.jsonDecode(response.body);
 
     website = json['result']['website'];
-    print(
-        "GOT WEBSITE ??? --------------------------------------------------- " +
-            json['result']['website']);
+
     setState(() {});
   }
 
@@ -86,9 +84,6 @@ class _DetailsScreenState extends State<DetailsScreen> {
     double rating = widget.place.rating!;
     String vicinity = widget.place.vicinity!;
     String ratingCount = widget.place.ratingCount!;
-    print(
-        "BUILD PROFILE PAGE ------------------------------------------------------ NAME = " +
-            name);
 
     return (name != "")
         ? Scaffold(
