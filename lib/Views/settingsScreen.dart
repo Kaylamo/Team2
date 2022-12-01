@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -20,7 +21,7 @@ class SettingsPageState extends State<SettingsPage> {
         ),
         body: Center(
               child: SwitchScreen()
-          ),
+        ),
         ),
       //),
     );
@@ -29,18 +30,18 @@ class SettingsPageState extends State<SettingsPage> {
 
 class Themes{
   static final light = ThemeData(
-    scaffoldBackgroundColor: Colors.grey.shade900,
+    scaffoldBackgroundColor: Colors.white,
     colorScheme: ColorScheme.light(),
   );
   static final dark = ThemeData(
-    scaffoldBackgroundColor: Colors.white,
+    scaffoldBackgroundColor: Colors.grey.shade900,
     colorScheme: ColorScheme.dark(),
   );
 }
 
 class CurrentTheme extends ChangeNotifier{
   ThemeMode themeMode = ThemeMode.light;
-  bool get isLightMode => themeMode == ThemeMode.light;
+  bool get isDarkMode => themeMode == ThemeMode.dark;
 }
 
 class SwitchScreen extends StatefulWidget {
@@ -50,7 +51,7 @@ class SwitchScreen extends StatefulWidget {
 
 class SwitchClass extends State {
   bool isSwitched = false;
-  var textValue = 'Switch is OFF';
+  var textValue = 'Light Mode';
 
   void toggleSwitch(bool value) {
 
@@ -66,14 +67,16 @@ class SwitchClass extends State {
     {
       setState(() {
         isSwitched = false;
-        textValue = 'Switch Button is OFF';
+        textValue = 'Light Mode';
       });
-      print('Switch Button is OFF');
+      print('Dark Mode');
     }
   }
   @override
   Widget build(BuildContext context) {
-    return Column(
+    //final currentTheme = Provider.of<CurrentTheme>(context);
+    return //Switch.adaptive(value: currentTheme.isDarkMode, onChanged: (bool value) {  },);
+    Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children:[ Transform.scale(
             scale: 2,
