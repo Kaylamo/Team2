@@ -1,29 +1,18 @@
-import 'package:GasTracker/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:GasTracker/utils/scroll_top_with_controller.dart' as scrollTop;
 import 'package:GasTracker/Views/gasStationDetails.dart';
-import 'package:GasTracker/widgets/appbar_widget.dart';
-import 'package:GasTracker/widgets/profile_widget.dart';
-import 'edit_profile_page.dart';
-import 'package:GasTracker/widgets/numbers_widget.dart';
 import 'package:GasTracker/uservariables.dart';
 import 'package:GasTracker/views/homeScreen.dart';
-import 'package:GasTracker/utils/transition_variables.dart';
 import 'package:GasTracker/services/marker_service.dart';
-import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:geolocator/geolocator.dart';
 import '/models/place.dart';
-import 'package:GasTracker/services/places_service.dart';
 import '/services/geolocator_service.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:GasTracker/widgets/bottom_navigation_item.dart';
 import 'package:GasTracker/utils/navi.dart' as navi;
-import 'profileScreen.dart';
-import 'favoritesScreen.dart';
-import 'package:GasTracker/uservariables.dart';
 import 'package:GasTracker/database/database_methods.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:GasTracker/globals.dart' as globals;
@@ -55,9 +44,6 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
 
   addFavorite(placeId) async {
     String userId = globals.userId;
-    /* Map<String, dynamic> favoritesMessageMap = {
-      "placeId": placeId
-    };   */
     FirebaseFirestore.instance
         .collection("users")
         .doc(userId)
@@ -115,10 +101,6 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         body: (currentPosition != null)
             ? Consumer<List<Place>?>(
                 builder: (context, places, __) {
-                  List<Marker> emptyMarkers = [];
-                  var markers = (places != null)
-                      ? markerService.getMarkers(places)
-                      : emptyMarkers;
                   return (places != null)
                       ? Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
