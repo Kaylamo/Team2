@@ -22,7 +22,13 @@ class _FeedbackPageState extends State<FeedbackPage> {
                // width: MediaQuery.of(context).size.,
                 child: Column(
                   children: [
-                Text('Did you find any issue in our application?',style: TextStyle(fontSize: 18)),
+                    CircleAvatar(
+                      backgroundColor: Colors.white70,
+                      radius: 75,
+                      backgroundImage: AssetImage("img/gastracker.png"),
+                    ),
+
+                    Text('Did you find any issue in our application?',style: TextStyle(fontSize: 18)),
                     Container(
                       height: 20,
                     ),
