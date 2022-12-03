@@ -1,4 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:GasTracker/widgets/bottom_navigation_item.dart';
+import 'package:GasTracker/utils/navi.dart' as navi;
+import 'package:GasTracker/Views/profile_page_new.dart';
+import 'favoritesScreen.dart';
+import "homeScreen.dart";
+import 'package:GasTracker/widgets/button_widget.dart';
+import 'package:GasTracker/Views/Feedback.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:GasTracker/globals.dart' as globals;
 
 class AboutUsPage extends StatefulWidget {
   const AboutUsPage({Key? key}) : super(key: key);
@@ -14,22 +23,62 @@ class _AboutUsPageState extends State<AboutUsPage> {
 
       color: Colors.white,
       home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.blue[800],
-          title: Text("About US",style: TextStyle(fontSize: 18),),
-        ),
-
         body: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(1.0),
           child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
               //  crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Row(
+                    children: <Widget>[
+                      SizedBox(width: 2),
+                      BottomNavigationItem(
+                        icon: Icon(Icons.person),
+                        iconSize: 28,
+                        onPressed: () => navi.newScreen(
+                          context: context,
+                          newScreen: () => ProfilePageNew(),
+                        ),
+                      ),
+                      SizedBox(width: 5),
+                      BottomNavigationItem(
+                        icon: Icon(Icons.star),
+                        iconSize: 28,
+                        onPressed: () => navi.newScreen(
+                          context: context,
+                          newScreen: () => FavoritesScreen(
+                            themeColor: Colors.red,
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 5),
+                      BottomNavigationItem(
+                        icon: Icon(Icons.map),
+                        iconSize: 28,
+                        onPressed: () => navi.newScreen(
+                          context: context,
+                          newScreen: () => HomePage(),
+                        ),
+                      ),
+                      const SizedBox(width: 25),
+                      const Align(
+                        alignment: Alignment.topRight,
+                        child: Text(
+                          "About Us",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.redAccent,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20),
+                        ),
+                      )
+                    ],
+                  ),
                   CircleAvatar(
                     backgroundColor: Colors.white70,
-                    radius: 75,
+                    radius: 115,
                     backgroundImage: AssetImage("img/gastracker.png"),
                   ),
+                  SizedBox(height: 20),
                   Center(
                     child: Container(
                       // height: MediaQuery.of(context).size.height,
@@ -45,6 +94,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
                     ),
 
                   ),
+                  SizedBox(height: 40),
                   Center(
                     child: Container(
                       // height: MediaQuery.of(context).size.height,
@@ -57,6 +107,22 @@ class _AboutUsPageState extends State<AboutUsPage> {
                           ),),
                         )
                     ),
+                  ),
+                  SizedBox(height: 20),
+                  ButtonWidget(
+                    text: 'Send Feedback',
+                    onClicked: () async {
+                      String email = Uri.encodeComponent("siddukasam7@gmail.com");
+                      String subject = Uri.encodeComponent("Issue in Gas Tracker App");
+                      String body = Uri.encodeComponent("Hi! I'm " + globals.myName);
+                      print(subject); //output: Hello%20Flutter
+                      Uri mail = Uri.parse("mailto:$email?subject=$subject&body=$body");
+                      if (await launchUrl(mail)) {
+                      //email app opened
+                      }else{
+                      //email app is not opened
+                      }
+                    },
                   ),
                 ],
               ),

@@ -21,7 +21,7 @@ import 'package:GasTracker/globals.dart' as globals;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:GasTracker/Views/profile_page_new.dart';
 import 'settingsScreen.dart';
-
+import 'aboutUs.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -141,11 +141,11 @@ class HomePageState extends State<HomePage> {
                                       ),
                                       SizedBox(width: 5),
                                       BottomNavigationItem(
-                                        icon: Icon(Icons.settings),
+                                        icon: Icon(Icons.info),
                                         iconSize: 28,
                                         onPressed: () => navi.newScreen(
                                           context: context,
-                                          newScreen: () => SettingsPage(),
+                                          newScreen: () => AboutUsPage(),
                                         ),
                                       ),
                                       const SizedBox(width: 25),
