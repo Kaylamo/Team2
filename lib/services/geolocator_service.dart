@@ -1,4 +1,5 @@
 import 'package:geolocator/geolocator.dart';
+import 'package:GasTracker/database/database_methods.dart';
 
 /// Determine the current position of the device.
 ///
@@ -40,6 +41,20 @@ class GeoLocatorService {
 
     // When we reach here, permissions are granted and we can
     // continue accessing the position of the device.
-    return await Geolocator.getCurrentPosition();
+    return await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
   }
+
+  Future<double> getDistance(double startLatitude, double startLongitude, double endLatitude, double endLongitude)  async {
+    var meters = 0.0;
+    try{
+      meters =  Geolocator.distanceBetween(startLatitude, startLongitude, endLatitude, endLongitude);
+    } on Exception catch (e) {
+      print("ERROR - " + e.toString());
+    }
+    DatabaseMethods().getFavorites();
+    return meters;
+  }
+
+
+
 }

@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import '/views/transition.dart';
-//import "package:firebase_auth/firebase_auth.dart";
-//import 'package:cloud_firestore/cloud_firestore.dart';
+import "package:firebase_auth/firebase_auth.dart";
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SignUpPage extends StatelessWidget {
   @override
   //sign up with email function
-  /*static Future<User?> createUserWithEmailAndPassword({required String firstName, required String lastName, required String role, required String email, required String password, required BuildContext context}) async{
+  static Future<User?> createUserWithEmailAndPassword({required String firstName, required String lastName, required String role, required String email, required String password, required BuildContext context}) async{
     FirebaseAuth auth = FirebaseAuth.instance;
     User? user;
     try {
@@ -29,15 +29,16 @@ class SignUpPage extends StatelessWidget {
           'registrationDatetime':  myDateTime,
           "about": "",
           "imagePath": "https://static.vecteezy.com/system/resources/previews/002/318/271/original/user-profile-icon-free-vector.jpg",
-          "subscriptionCount": 0
+          "favoritesCount": 0
         });
       }
     } on FirebaseAuthException catch (e){
-      print (e) ;
+      print ("ERORR IN ACCOUNT CREATION - " + e.toString()) ;
+      return null;
     }
 
     return user;
-  }*/
+  }
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController firstName = TextEditingController();
@@ -224,7 +225,8 @@ class SignUpPage extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () async {
-              /*User? user = await createUserWithEmailAndPassword(
+              print("CREATING USER -----------------------------------------------------");
+              User? user = await createUserWithEmailAndPassword(
                   firstName: firstName.text,
                   lastName: lastName.text,
                   email: emailController.text,
@@ -238,7 +240,7 @@ class SignUpPage extends StatelessWidget {
                     MaterialPageRoute(
                         builder: (context) => TransitionPage())
                 );
-              }*/
+              }
               Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
                       builder: (context) => TransitionPage())

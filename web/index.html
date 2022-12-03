@@ -101,5 +101,28 @@
       loadMainDartJs();
     }
   </script>
+  <script>
+    // Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyCWkRATxvHxv64tqGuEljf5XBjWzMG0x80",
+  authDomain: "gas-tracker-93d2a.firebaseapp.com",
+  projectId: "gas-tracker-93d2a",
+  storageBucket: "gas-tracker-93d2a.appspot.com",
+  messagingSenderId: "201221229888",
+  appId: "1:201221229888:web:84481b4391a0650df83ea5",
+  measurementId: "G-CYZ5SQKBPR"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+  </script>
 </body>
 </html>

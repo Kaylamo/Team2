@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '/views/signupscreen.dart';
 import 'package:get/get.dart';
 import '/views/transition.dart';
-//import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -17,7 +17,7 @@ class _LoginPageState extends State<LoginPage> {
   //AccessToken? _accessToken;
 
   //login function
-  /*static Future<User?> loginUsingEmailPassword({required String email, required String password, required BuildContext context}) async{
+  static Future<User?> loginUsingEmailPassword({required String email, required String password, required BuildContext context}) async{
     FirebaseAuth auth = FirebaseAuth.instance;
     User? user;
     try {
@@ -30,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     return user;
-  }*/
+  }
 
 
   @override
@@ -148,18 +148,18 @@ class _LoginPageState extends State<LoginPage> {
           ),
           GestureDetector(
             onTap: () async {
-              /*User? user =  await loginUsingEmailPassword(email: emailController.text, password: passwordController.text, context: context);
+              User? user =  await loginUsingEmailPassword(email: emailController.text, password: passwordController.text, context: context);
               print(user);
               if (user != null){
                 Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
                         builder: (context) => TransitionPage())
                 );
-              }*/
-              Navigator.of(context).pushReplacement(
+              }
+              /*Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
                       builder: (context) => TransitionPage())
-              );
+              );*/
             },
             child: Container(
               width: w * 0.5,
